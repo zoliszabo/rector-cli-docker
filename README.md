@@ -49,8 +49,6 @@ Note: The `-it` flags enable interactive mode, which is only necessary when Rect
 ### Available Tags
 
 *   `latest`: The image with the latest versions of PHP and Rector
-*   `v<RECTOR_VERSION>`: The image with a specific Rector version (e.g., `v2.1`)
-*   `php<PHP_VERSION>`: The image with a specific PHP version (e.g., `php8.4`)
 *   `php<PHP_VERSION>-v<RECTOR_VERSION>`: The image with specific PHP and Rector versions (e.g., `php8.4-v2.1`)
 
 ## Development
