@@ -1,2 +1,10 @@
 #!/bin/sh
-docker run -i --rm -v "$(pwd)":/app zoliszabo/rector rector "$@"
+
+# Check if running in interactive terminal environment
+if [ -t 0 ] && [ -t 1 ]; then
+    # Running in interactive terminal - use -it flags
+    docker run --rm -it -v "$(pwd)":/app zoliszabo/rector rector "$@"
+else
+    # Running in non-interactive environment (CI/scripts) - skip -it flags
+    docker run --rm -v "$(pwd)":/app zoliszabo/rector rector "$@"
+fi
