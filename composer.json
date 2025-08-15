@@ -1,0 +1,9 @@
+{
+    "name": "zoliszabo/rector-cli-docker",
+    "description": "Composer installer / wrapper for running Rector via Docker.",
+    "type": "project",
+    "license": "MIT",
+    "bin": [
+        "bin/rector-cli-docker"
+    ]
+}

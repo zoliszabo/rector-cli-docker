@@ -1,0 +1,2 @@
+#!/bin/sh
+docker run -i --rm -v "$(pwd)":/app zoliszabo/rector-cli rector "$@"
