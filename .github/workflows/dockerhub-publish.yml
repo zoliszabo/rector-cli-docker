@@ -1,9 +1,7 @@
 name: Build and Push Rector Docker Image
 
 on:
-  push:
-    branches:
-      - main
+  release:
   workflow_dispatch:
 
 jobs:
