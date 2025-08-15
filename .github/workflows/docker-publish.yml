@@ -43,7 +43,7 @@ jobs:
           context: .
           push: true
           tags: |
-            zoliszabo/rector-cli:latest
-            zoliszabo/rector-cli:v${{ steps.build_and_get_versions.outputs.rector_version }}
-            zoliszabo/rector-cli:php${{ steps.build_and_get_versions.outputs.php_version }}
-            zoliszabo/rector-cli:php${{ steps.build_and_get_versions.outputs.php_version }}-v${{ steps.build_and_get_versions.outputs.rector_version }}
+            zoliszabo/rector:latest
+            zoliszabo/rector:v${{ steps.build_and_get_versions.outputs.rector_version }}
+            zoliszabo/rector:php${{ steps.build_and_get_versions.outputs.php_version }}
+            zoliszabo/rector:php${{ steps.build_and_get_versions.outputs.php_version }}-v${{ steps.build_and_get_versions.outputs.rector_version }}
