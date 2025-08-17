@@ -10,7 +10,7 @@ There are two primary ways to use this tool: via the Composer package (recommend
 
 ### 1. Composer (Recommended)
 
-This method provides a convenient `rector-docker` command.
+This method provides a convenient `rector-docker` command via the [rector-docker-composer](https://github.com/zoliszabo/rector-docker-composer) wrapper library.
 
 #### Installation
 
@@ -22,12 +22,26 @@ composer global require zoliszabo/rector-docker
 
 Ensure your global Composer `bin` directory is in your system's `PATH`.
 
-#### Running Rector
-
-Once installed, you can run Rector from anywhere on your system. Navigate to your project's root directory and execute:
+Alternatively, if your project uses Composer, you can install it as a development dependency:
 
 ```bash
+composer require --dev zoliszabo/rector-docker
+```
+
+#### Running Rector
+
+Once installed, you can run Rector:
+
+**Global installation:**
+```bash
 rector-docker process src
+```
+
+**Project-specific installation:**
+```bash
+vendor/bin/rector-docker process src
+# or
+composer exec rector-docker process src
 ```
 
 Any arguments passed to `rector-docker` are forwarded directly to the Rector process inside the container. The command automatically detects whether it's running in an interactive environment and handles Docker flags accordingly.
