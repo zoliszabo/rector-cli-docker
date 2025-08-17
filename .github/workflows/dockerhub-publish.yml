@@ -20,20 +20,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build image and extract versions
-        id: build_and_get_versions
+      - name: Build image and extract Rector version
+        id: build_and_get_version
         run: |
           # Build the image with a temporary local tag
           docker build -t temp-image-tag .
 
-          # Run the image to get the installed versions
-          PHP_VERSION=$(docker run --rm temp-image-tag php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")
+          # Run the image to get the installed Rector version
           RECTOR_FULL_VERSION=$(docker run --rm temp-image-tag rector --version | grep -Po '^Rector \K\d+\.\d+\.\d+')
-          RECTOR_MAJOR_MINOR=$(echo $RECTOR_FULL_VERSION | grep -Po '^\d+\.\d+')
 
-          # Set outputs for the next steps
-          echo "php_version=$PHP_VERSION" >> $GITHUB_OUTPUT
-          echo "rector_version=$RECTOR_MAJOR_MINOR" >> $GITHUB_OUTPUT
+          # Set output for the next step
+          echo "rector_version=$RECTOR_FULL_VERSION" >> $GITHUB_OUTPUT
 
       - name: Build and push to Docker Hub with dynamic tags
         uses: docker/build-push-action@v6
@@ -42,4 +39,4 @@ jobs:
           push: true
           tags: |
             zoliszabo/rector:latest
-            zoliszabo/rector:php${{ steps.build_and_get_versions.outputs.php_version }}-v${{ steps.build_and_get_versions.outputs.rector_version }}
+            zoliszabo/rector:${{ steps.build_and_get_version.outputs.rector_version }}
