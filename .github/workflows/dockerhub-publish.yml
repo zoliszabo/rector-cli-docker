@@ -52,6 +52,7 @@ jobs:
         with:
           app-id: ${{ vars.RECTOR_DOCKER_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.RECTOR_DOCKER_AUTOMATION_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
 
       - name: Trigger update in rector-docker-composer repository
         uses: peter-evans/repository-dispatch@v3
