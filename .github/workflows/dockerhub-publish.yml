@@ -1,7 +1,6 @@
 name: Build and Push Rector Docker Image
 
 on:
-  release:
   workflow_dispatch:
 
 jobs:
@@ -27,7 +26,7 @@ jobs:
           docker build -t temp-image-tag .
 
           # Run the image to get the installed Rector version
-          RECTOR_FULL_VERSION=$(docker run --rm temp-image-tag rector --version | grep -Po '^Rector \K\d+\.\d+\.\d+')
+          RECTOR_FULL_VERSION=$(docker run --rm temp-image-tag rector --version | sed -n 's/^Rector \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p')
 
           # Set output for the next step
           echo "rector_version=$RECTOR_FULL_VERSION" >> $GITHUB_OUTPUT
@@ -40,3 +39,21 @@ jobs:
           tags: |
             zoliszabo/rector:latest
             zoliszabo/rector:${{ steps.build_and_get_version.outputs.rector_version }}
+
+      - name: Generate GitHub App token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Trigger update in rector-docker-composer repository
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
+          repository: zoliszabo/rector-docker-composer
+          event-type: docker-image-updated
+          client-payload: |
+            {
+              "rector_version": "${{ steps.build_and_get_version.outputs.rector_version }}"
+            }
