@@ -22,8 +22,12 @@ jobs:
       - name: Build image and extract Rector version
         id: build_and_get_version
         run: |
-          # Build the image with a temporary local tag
-          docker build -t temp-image-tag .
+          # Build the image with a temporary local tag using buildx with cache
+          docker buildx build \
+            --load \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            -t temp-image-tag .
 
           # Run the image to get the installed Rector version
           RECTOR_FULL_VERSION=$(docker run --rm temp-image-tag rector --version | sed -n 's/^Rector \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p')
@@ -39,6 +43,8 @@ jobs:
           tags: |
             zoliszabo/rector:latest
             zoliszabo/rector:${{ steps.build_and_get_version.outputs.rector_version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Generate GitHub App token
         id: generate_token
